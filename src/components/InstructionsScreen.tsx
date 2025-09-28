@@ -14,7 +14,7 @@ export function InstructionsScreen() {
         <p className="text-slate-500">WebView for NPCI Portal</p>
       </div>
       <Button className="mt-8" size="lg">
-        I've Checked My Status
+        I&apos;ve Checked My Status
       </Button>
     </div>
   )
