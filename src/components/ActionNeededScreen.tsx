@@ -5,20 +5,19 @@
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// The component is now a named export and defines its own logic
 export function ActionNeededScreen() {
 
-  // Logic for the "Download PDF" button
+  // Triggers a download of the consent form located in the /public folder
   const handleDownloadPdf = () => {
-    // This points to the file in your `public` folder
+    console.log('Downloading Aadhaar seeding consent form PDF...');
     window.location.href = '/Aadhaar_Seeding_Consent_Form.pdf';
   };
 
-  // Logic for the "Find My Bank" button
+  // Opens a new tab with a Google Maps search for banks in Bhopal
   const handleFindBank = () => {
-    // We'll create a helpful Google Maps search query for banks in Bhopal
+    console.log('Opening bank locator...');
     const query = encodeURIComponent("Nationalised bank branches near me Bhopal");
-    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+    window.open(`https://maps.google.com/?q=${query}`, '_blank');
   };
 
   return (
@@ -59,5 +58,5 @@ export function ActionNeededScreen() {
         </ol>
       </div>
     </main>
-  )
+  );
 }

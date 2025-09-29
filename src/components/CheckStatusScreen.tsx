@@ -11,36 +11,35 @@ import { Button } from "@/components/ui/button";
 type Status = "success" | "pending" | "error" | "checking";
 
 export function CheckStatusScreen() {
+  // 1. Hooks are grouped at the top
   const router = useRouter();
-  
-  // We now use React state to manage the status
   const [status, setStatus] = useState<Status>("checking");
 
+  // 2. Event handlers are grouped together
+  const handleContinue = () => {
+    // Navigates to the action page when the check 'fails'
+    router.push('/action');
+  };
+
+  const handleRetryCheck = () => {
+    // A simple way to restart the simulation
+    window.location.reload();
+  };
+
+  // 3. Effects are grouped together
   useEffect(() => {
-    // This effect runs once when the component loads
-    
-    // After 1.5 seconds, change status to 'pending'
-    const timer1 = setTimeout(() => {
-      setStatus("pending");
-    }, 1500);
+    // This effect runs once to simulate the API call
+    const timer1 = setTimeout(() => setStatus("pending"), 1500);
+    const timer2 = setTimeout(() => setStatus("error"), 3500);
 
-    // After 3.5 seconds, change status to 'error' to guide the demo flow
-    const timer2 = setTimeout(() => {
-      setStatus("error");
-    }, 3500);
-
-    // Cleanup function to prevent errors if the user navigates away
+    // Cleanup function to prevent errors
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
   }, []); // The empty array [] means this effect runs only once
 
-  // This function handles navigation when the user needs to proceed
-  const handleContinue = () => {
-    router.push('/action');
-  };
-
+  // 4. Data transformation / display logic
   const getStatusDisplay = () => {
     switch (status) {
       case "success":
@@ -80,6 +79,7 @@ export function CheckStatusScreen() {
 
   const statusDisplay = getStatusDisplay();
 
+  // 5. The final JSX to render
   return (
     <main className="min-h-svh px-4 py-8">
       <div className="mx-auto flex max-w-sm flex-col items-center text-center">
@@ -117,7 +117,7 @@ export function CheckStatusScreen() {
               <Button onClick={handleContinue} className="w-full">
                 Show Me How to Fix This
               </Button>
-              <Button onClick={() => window.location.reload()} variant="outline" className="w-full">
+              <Button onClick={handleRetryCheck} variant="outline" className="w-full">
                 Try Again
               </Button>
             </>

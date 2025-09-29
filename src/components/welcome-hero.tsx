@@ -1,14 +1,29 @@
+// src/components/welcome-hero.tsx
+
 "use client";
 
 import { useRouter } from 'next/navigation';
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export function WelcomeHero() {
-  
-  const router = useRouter(); 
+  const router = useRouter();
 
-  const handleCheckStatusClick = () => { 
+  // Navigates to the main status checking flow
+  const handleCheckStatusClick = () => {
+    console.log('Navigating to status check page...');
     router.push('/check');
+  };
+
+  // Navigates to the FAQ / Information Hub page
+  const handleViewFAQs = () => {
+    console.log('Navigating to FAQ page...');
+    router.push('/faq');
+  };
+
+  // The "Learn More" button will also take the user to the FAQ page
+  const handleLearnMore = () => {
+    console.log('Navigating to FAQ page via Learn More...');
+    router.push('/faq');
   };
 
   return (
@@ -26,12 +41,20 @@ export function WelcomeHero() {
           {"Discover opportunities and check your eligibility in minutes."}
         </p>
 
-        <div className="mt-6">
+        <div className="mt-6 space-y-3">
           <Button onClick={handleCheckStatusClick} size="lg" className="w-full" aria-label="Check my scholarship status">
             Check My Status
           </Button>
+          <div className="flex gap-3">
+            <Button onClick={handleViewFAQs} variant="outline" className="flex-1" size="sm">
+              FAQs
+            </Button>
+            <Button onClick={handleLearnMore} variant="outline" className="flex-1" size="sm">
+              Learn More
+            </Button>
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
