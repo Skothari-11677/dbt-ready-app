@@ -17,7 +17,7 @@ export function SuccessScreen() {
         </div>
         <h1 className="text-3xl font-semibold">Account Already Seeded!</h1>
         <p className="mt-2 text-muted-foreground">
-          Congratulations! Your bank account is ready to receive DBT payments. No further action is required.
+          Congratulations! Your bank account is already seeded and ready to receive DBT payments. No further action is required.
         </p>
         <Button onClick={() => router.push('/')} size="lg" className="mt-8 w-full">
           Back to Home
