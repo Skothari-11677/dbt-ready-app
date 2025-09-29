@@ -1,9 +1,18 @@
-"use client"
+// src/app/success/page.tsx
+
+"use client";
+
+// 1. Import the tools we need for navigation and the button
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function SuccessScreen() {
+  // 2. Initialize the router so we can navigate
+  const router = useRouter();
+
   return (
     <main className="min-h-screen w-full px-4 py-10 flex flex-col items-center justify-center text-center gap-4">
-      <div className="flex items-center justify-center text-success" aria-hidden="true">
+      <div className="flex items-center justify-center text-green-500" aria-hidden="true"> {/* Matched color to text */}
         <svg
           className="h-20 w-20"
           viewBox="0 0 24 24"
@@ -25,7 +34,7 @@ export default function SuccessScreen() {
       </div>
 
       {/* Heading */}
-      <h1 className="text-2xl md:text-3xl font-semibold text-balance text-success">
+      <h1 className="text-2xl md:text-3xl font-semibold text-balance text-green-600"> {/* Matched color */}
         {"Congratulations! You are DBT-Ready."}
       </h1>
 
@@ -33,6 +42,13 @@ export default function SuccessScreen() {
       <p className="max-w-sm leading-relaxed text-pretty text-muted-foreground">
         {"No further action is needed. Your scholarship will be directly deposited to your seeded bank account"}
       </p>
+
+      {/* 3. Add the button to navigate the user back to the homepage */}
+      <div className="mt-4 w-full max-w-xs">
+        <Button onClick={() => router.push('/')} size="lg" className="w-full">
+          Back to Home
+        </Button>
+      </div>
     </main>
-  )
+  );
 }
