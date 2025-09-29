@@ -5,7 +5,6 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/Footer";
 import { UserProvider } from '@/context/UserContext';
-import { Analytics } from '@vercel/analytics/react'; // 1. ADD THIS LINE: Import the Analytics component
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +14,15 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "DBT Ready App",
   description: "Check your Aadhaar Seeding Status for Scholarships",
+  manifest: '/manifest.json',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#3b82f6',
 };
 
 export default function RootLayout({
@@ -32,9 +40,6 @@ export default function RootLayout({
             <Footer />
           </div>
         </UserProvider>
-        
-        {/* The Analytics component is now correctly imported and placed */}
-        <Analytics />
       </body>
     </html>
   );

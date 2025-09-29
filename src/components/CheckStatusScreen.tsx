@@ -1,139 +1,138 @@
-// src/components/CheckStatusScreen.tsx
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useUser } from "@/context/UserContext";
 
-// A type for our possible statuses
-type Status = "success" | "pending" | "error" | "checking";
+// Define the steps in our interactive flow
+type Step = 'instructions' | 'prompting';
 
 export function CheckStatusScreen() {
-  // 1. Hooks are grouped at the top
   const router = useRouter();
-  const [status, setStatus] = useState<Status>("checking");
+  const { user } = useUser();
+  const [step, setStep] = useState<Step>('instructions');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 2. Event handlers are grouped together
-  const handleContinue = () => {
-    // Navigates to the action page when the check 'fails'
+  // Handle iframe load completion
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+  };
+
+  const handleSuccess = () => {
+    router.push('/success');
+  };
+
+  const handleFailure = () => {
     router.push('/action');
   };
 
-  const handleRetryCheck = () => {
-    // A simple way to restart the simulation
-    window.location.reload();
-  };
-
-  // 3. Effects are grouped together
-  useEffect(() => {
-    // This effect runs once to simulate the API call
-    const timer1 = setTimeout(() => setStatus("pending"), 1500);
-    const timer2 = setTimeout(() => setStatus("error"), 3500);
-
-    // Cleanup function to prevent errors
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
-  }, []); // The empty array [] means this effect runs only once
-
-  // 4. Data transformation / display logic
-  const getStatusDisplay = () => {
-    switch (status) {
-      case "success":
-        return {
-          icon: <CheckCircle className="h-14 w-14 text-green-600" />,
-          title: "Account Successfully Seeded!",
-          description: "Your Aadhaar has been linked to your bank account.",
-          color: "text-green-600",
-          bgColor: "bg-green-50",
-        };
-      case "pending":
-        return {
-          icon: <Clock className="h-14 w-14 text-yellow-600" />,
-          title: "Status Check in Progress",
-          description: "We're verifying your account seeding status. This may take a few minutes.",
-          color: "text-yellow-600",
-          bgColor: "bg-yellow-50",
-        };
-      case "error":
-        return {
-          icon: <AlertCircle className="h-14 w-14 text-red-600" />,
-          title: "Unable to Verify Status",
-          description: "We couldn't verify your account seeding status. Let's fix this.",
-          color: "text-red-600",
-          bgColor: "bg-red-50",
-        };
-      default: // checking
-        return {
-          icon: <Clock className="h-14 w-14 text-blue-600 animate-spin" />,
-          title: "Checking Account Status",
-          description: "Please wait while we verify your Aadhaar seeding status with the bank.",
-          color: "text-blue-600",
-          bgColor: "bg-blue-50",
-        };
-    }
-  };
-
-  const statusDisplay = getStatusDisplay();
-
-  // 5. The final JSX to render
   return (
-    <main className="min-h-svh px-4 py-8">
-      <div className="mx-auto flex max-w-sm flex-col items-center text-center">
-        <div className={`mb-4 rounded-full p-4 ${statusDisplay.bgColor}`}>
-          {statusDisplay.icon}
-          <span className="sr-only">Status indicator</span>
-        </div>
-
-        <h1 className={`text-balance text-2xl font-semibold ${statusDisplay.color}`}>
-          {statusDisplay.title}
-        </h1>
-
-        <p className="mt-3 text-pretty text-sm text-muted-foreground">
-          {statusDisplay.description}
-        </p>
-
-        {status === "checking" && (
-          <div className="mt-6 w-full">
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div className="h-full bg-blue-600 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+    <>
+      {/* The main screen with the WebView */}
+      <main className="min-h-svh flex flex-col items-center px-2 sm:px-4 py-4 sm:py-8 text-center">
+        <div className="w-full max-w-2xl flex-1 flex flex-col">
+          <header>
+            <h1 className="text-2xl sm:text-3xl font-semibold leading-tight">
+              {user ? `${user.name}, check` : "Check"} Your Status on the Official Portal
+            </h1>
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+              Use the secure government portal below to check if your bank account is seeded with Aadhaar for DBT (Direct Benefit Transfer).
+            </p>
+            <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg text-xs sm:text-sm">
+              <p className="font-medium text-blue-900">💡 Quick Tip:</p>
+              <p className="text-blue-800 leading-relaxed">
+                Enter your Aadhaar number in the portal below. Look for &ldquo;Account Status&rdquo; - it should show &ldquo;Seeded&rdquo; for DBT eligibility.
+              </p>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">Checking with bank systems...</p>
+          </header>
+
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="mt-4 sm:mt-6 flex-1 flex items-center justify-center bg-gray-50 rounded-lg border border-border min-h-[400px] sm:min-h-[500px]">
+              <div className="text-center px-4">
+                <div className="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-muted-foreground text-sm">Loading official portal...</p>
+                <p className="text-xs text-muted-foreground mt-2">This may take a moment on mobile networks</p>
+              </div>
+            </div>
+          )}
+
+          {/* This is the WebView that loads the official site */}
+          <iframe
+            src="https://resident.uidai.gov.in/bank-mapper"
+            title="Aadhaar Bank Mapper - Official Government Portal"
+            className={`mt-4 sm:mt-6 w-full flex-1 min-h-[400px] sm:min-h-[500px] rounded-lg border border-border ${isLoading ? 'hidden' : 'block'}`}
+            onLoad={handleIframeLoad}
+            sandbox="allow-same-origin allow-scripts allow-forms"
+            style={{
+              minHeight: 'calc(100vh - 400px)',
+              maxHeight: 'calc(100vh - 300px)'
+            }}
+          />
+          
+          <div className="mt-4 sm:mt-6 space-y-2 px-2 sm:px-0">
+            <Button 
+              size="lg" 
+              className="w-full h-12 text-base font-medium" 
+              onClick={() => setStep('prompting')}
+              disabled={isLoading}
+            >
+              {isLoading ? "Please wait for portal to load..." : "✅ I Have Finished Checking"}
+            </Button>
+            <p className="text-xs text-muted-foreground text-center leading-relaxed">
+              Having trouble? The portal may take a moment to load on slower connections.
+            </p>
           </div>
-        )}
-
-        <div className="mt-8 w-full space-y-3">
-          {status === "success" && (
-            <Button onClick={() => router.push('/')} className="w-full" size="lg">
-              Back to Home
-            </Button>
-          )}
-
-          {status === "error" && (
-            <>
-              <Button onClick={handleContinue} className="w-full">
-                Show Me How to Fix This
-              </Button>
-              <Button onClick={handleRetryCheck} variant="outline" className="w-full">
-                Try Again
-              </Button>
-            </>
-          )}
-
-          {status === "checking" && (
-            <Button variant="outline" className="w-full" disabled>
-              Please Wait...
-            </Button>
-          )}
         </div>
-        
-        <div className="mt-6 text-xs text-muted-foreground">
-          <p>This process is secure and follows RBI guidelines.</p>
-        </div>
-      </div>
-    </main>
+      </main>
+
+      {/* This is the Dialog that will pop up to ask for the result */}
+      <AlertDialog open={step === 'prompting'} onOpenChange={() => setStep('instructions')}>
+        <AlertDialogContent className="w-[95vw] max-w-md mx-auto">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg sm:text-xl">What did you find on the portal?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3 text-sm">
+              <p>Please let us know what status you saw so we can guide you to the next step.</p>
+              <div className="text-xs sm:text-sm bg-yellow-50 p-3 rounded border border-yellow-200">
+                <p className="font-medium text-yellow-900">Look for:</p>
+                <p className="text-yellow-800 mt-1">• &ldquo;Account Status: Seeded&rdquo; means you&rsquo;re all set!</p>
+                <p className="text-yellow-800">• &ldquo;Not Seeded&rdquo; or &ldquo;No records found&rdquo; means action is needed</p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col gap-2 sm:flex-row">
+            <AlertDialogCancel 
+              onClick={() => setStep('instructions')}
+              className="w-full sm:w-auto order-last sm:order-first"
+            >
+              Let me check again
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleFailure} 
+              className="bg-orange-600 hover:bg-orange-700 w-full sm:w-auto text-sm"
+            >
+              ❌ Not Seeded / Need Help
+            </AlertDialogAction>
+            <AlertDialogAction 
+              onClick={handleSuccess}
+              className="bg-green-600 hover:bg-green-700 w-full sm:w-auto text-sm font-medium"
+            >
+              ✅ Account is Seeded!
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

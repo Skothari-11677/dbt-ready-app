@@ -13,5 +13,20 @@
   "tailwindCSS.validate": true,
   "editor.quickSuggestions": {
     "strings": true
+  },
+  "typescript.preferences.exclude": [
+    "**/node_modules/@vercel/**",
+    "**/node_modules/**"
+  ],
+  "typescript.preferences.skipLibCheck": true,
+  "typescript.suggest.autoImports": true,
+  "typescript.validate.enable": true,
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  "files.exclude": {
+    "**/node_modules/@vercel/analytics/tsconfig.json": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/node_modules/**": true
   }
 }
