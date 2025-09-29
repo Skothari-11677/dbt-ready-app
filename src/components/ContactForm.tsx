@@ -19,7 +19,7 @@ export function ContactForm() {
       <div className="text-center">
         <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
         <h2 className="mt-4 text-2xl font-semibold">Thank you for your message!</h2>
-        <p className="text-muted-foreground mt-2">We'll get back to you as soon as possible.</p>
+        <p className="text-muted-foreground mt-2">We&apos;ll get back to you as soon as possible.</p>
       </div>
     );
   }
