@@ -61,10 +61,10 @@ export function CheckStatusScreen() {
             <div className={`transition-opacity duration-300 ${step !== 'waiting' ? 'opacity-50' : ''}`}>
               <h2 className="font-semibold text-lg flex items-center">
                 <span className={`h-6 w-6 rounded-full flex items-center justify-center mr-3 transition-colors ${step === 'waiting' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>2</span>
-                Find "Bank Seeding Status"
+                Find &quot;Bank Seeding Status&quot;
               </h2>
               <p className="mt-2 text-muted-foreground ml-9">
-                Once logged in, find and click on the "Bank Seeding Status" service. After you see the result, come back to this tab and click the button below.
+                Once logged in, find and click on the &quot;Bank Seeding Status&quot; service. After you see the result, come back to this tab and click the button below.
               </p>
               <Button onClick={() => setStep('prompting')} disabled={step !== 'waiting'} className="mt-3 ml-9" variant="secondary">
                 <Hand className="mr-2 h-4 w-4" /> I Have Finished Checking
