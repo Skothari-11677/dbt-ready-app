@@ -82,7 +82,7 @@ export default function VideoTutorialsPage() {
               <ul className="list-disc ml-5 text-yellow-700 text-sm mt-2 space-y-1">
                 <li>Your Original Aadhaar Card</li>
                 <li>Your Bank Account Passbook</li>
-                <li>The filled "Aadhaar Seeding Consent Form" (downloadable from our app)</li>
+                <li>The filled &quot;Aadhaar Seeding Consent Form&quot; (downloadable from our app)</li>
               </ul>
             </div>
             <p className="text-sm text-gray-600 mb-4">The most reliable method is to visit your bank branch in person.</p>
