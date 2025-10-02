@@ -24,7 +24,7 @@ export function CheckStatusScreen() {
 
   const handleOpenPortal = () => {
     // This is the correct, working link for the portal
-    window.open("https://tathya.uidai.gov.in/access/login?role=resident", "_blank");
+    window.open("https://myaadhaar.uidai.gov.in/", "_blank");
     setStep('waiting');
   };
 
