@@ -5,11 +5,22 @@
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { useUser } from '@/context/UserContext';
-import { BookOpen, CheckSquare } from 'lucide-react'; // Import new icons
+import { BookOpen, CheckSquare, GraduationCap } from 'lucide-react'; // Import new icons
 
 export function WelcomeHero() {
   const router = useRouter();
   const { user } = useUser();
+
+  // Placeholder functions for navigation
+  const handleViewTutorials = () => {
+    console.log('Opening video tutorials...');
+    // TODO: Navigate to tutorials page or open modal
+  };
+
+  const handleViewFAQs = () => {
+    console.log('Opening FAQs...');
+    router.push('/faq');
+  };
 
   return (
     <section className="min-h-svh flex items-center justify-center px-6 py-10">
@@ -47,6 +58,15 @@ export function WelcomeHero() {
         <Button onClick={() => router.push('/faq')} variant="link" className="mt-6">
           Or, visit our FAQs
         </Button>
+        {/* Links for Tutorials and FAQs */}
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6">
+            <Button onClick={handleViewTutorials} variant="link">
+                <GraduationCap className="mr-2 h-4 w-4" /> Watch Video Tutorials
+            </Button>
+            <Button onClick={handleViewFAQs} variant="link">
+                Read our FAQs
+            </Button>
+        </div>
       </div>
     </section>
   );
